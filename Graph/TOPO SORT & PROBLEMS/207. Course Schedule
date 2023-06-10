@@ -1,0 +1,49 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        ArrayList<ArrayList<Integer>>adj=new ArrayList<>();
+        for(int i=0;i<numCourses;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<prerequisites.length;i++){
+           adj.get(prerequisites[i][0]).add(prerequisites[i][1]);
+        }
+        int visited[]=new int[numCourses];
+        for(int i=0;i<numCourses;i++){
+            if(dfs(i,visited,adj)==false)return false;
+        }
+        return true;
+    }
+    boolean dfs(int node,int[]visited,ArrayList<ArrayList<Integer>>adj){
+        // Return false if the node is visited and viewed again before completion
+        if(visited[node]==1)return false;
+        
+        // Return true if the node is completed processing
+        if(visited[node]==2)return true;
+
+        // Mark the node as visited
+        visited[node]=1;
+
+        // DFS of all the other nodes current "node" is connected to
+        for(int it:adj.get(node)){
+            if(dfs(it,visited,adj)==false)return false;
+        }
+
+        // If no more other nodes for the current "node" mark as completed and return true
+        visited[node]=2;
+        return true;
+    }
+}
+/*
+Intuition for bfs :-
+    Here we will just check it has cycle or not .
+    At first we create the corresponding adjacency list then created and indegree array and according to adj list increase the value of index
+
+    Then we will check if initially if any index has value 0 then we add that index into our queue ds then the main operation will start 
+    so whenever a element will be removed we will increse out counter variable to track the count of elements.
+    And for that node on the queue check its adj nodes and decrease their indegree number by 1 and check if it is 0 then add it to the queue .
+    At last if the number of counter variable and the numCourses is same then it means we do not have any cycle in it...
+    If it does not same then we return false mean there has  a cycle
+
+
+
+*/
