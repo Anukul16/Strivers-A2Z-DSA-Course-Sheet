@@ -1,0 +1,32 @@
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        int[] vis = new int[n];
+        int ans = 0;
+        
+        // Iterate through each node
+        for (int i = 0; i < n; i++) {
+            // If the current node hasn't been visited
+            if (vis[i] == 0) {
+                ans++;
+                dfs(i, vis, isConnected);
+            }
+        }
+        
+        return ans;
+    }
+    
+    // Depth-first search to explore the connected nodes
+    void dfs(int node, int[] vis, int[][] isConnected) {
+        vis[node] = 1; // Mark the current node as visited
+        
+        // Iterate through each neighbor of the current node
+       for(int neighbour=0;neighbour<isConnected.length;neighbour++){
+            // If the neighbor node hasn't been visited (vis[neighbour] == 0)
+            // and there is a direct connection between the current node and the neighbor (isConnected[node][neighbour] == 1)
+            if (vis[neighbour] == 0 && isConnected[node][neighbour] == 1) {
+                dfs(neighbour, vis, isConnected); // Recursive call to explore the neighbor
+            }
+        }
+    }
+}
